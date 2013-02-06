@@ -5,28 +5,116 @@
 		
 		<link charset="utf-8" rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="all" />
 		<link charset="utf-8" rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" media="all" />
+		<link charset="utf-8" rel="stylesheet" href="bootstrap/css/base.css" media="all" />
 
 		<script src="js/jquery.js"></script>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
-		<title>主页君</title>
+		<title>Nodejs简单入门－内容君</title>
 	</head>
 	<body>
 		<div class="navbar">
 			<div class="navbar-inner">
-				<a class="brand" href="#">我的主页</a>
+				<a class="brand" href="#">Nodejs简单入门</a>
 				<ul class="nav">
-				  <li><a href="/nodejs/index.html">首页</a></li>
-				  <li class="active"><a href="/nodejs/nodejs.html">nodejs</a></li>
+				  <li ><a href="/nodejs/index.html">首页</a></li>
+				  <li class="active"><a href="/nodejs/nodejs.html">介绍入门</a></li>
+				  <li ><a href="/nodejs/mvc.html">mvc架构</a></li>
 				</ul>
 			</div>
 		</div>
 		<div class="container">
-			<div class="hero-unit">
-			  <h1>施桢屹的主页</h1>
-			  <p>平时积累</p>
-			  <p>
-			  </p>
-			</div>
+			<div class="row">
+				<div class="span3 bs-docs-sidebar">
+			        <ul class="nav nav-list bs-docs-sidenav affix" >
+			          <li><a href="#intro"><i class="icon-chevron-right"></i>介绍</a></li>
+			          <li><a href="#install"><i class="icon-chevron-right"></i>安装</a></li>
+			          <li><a href="#helloworld"><i class="icon-chevron-right"></i>helloworld</a></li>
+			          <li><a href="#websites"><i class="icon-chevron-right"></i>推荐网站</a></li>
+			        </ul>
+			    </div>
+			    <div class="span9">
+			    	<section id = "intro">
+			    		<div class="hentry">
+						  <div class="page-header">
+						  	<h1 class="entry-title">介绍</h1>
+						  </div>
+						  <div class="entry-content">
+						  	<p>
+							  	Node.js，或者 Node，是一个可以让 JavaScript 运行在服务器端的平台。它可以让 JavaScript 脱离浏览器的束缚运行在一般的服务器环境下，就像运行 Python、Perl、PHP、Ruby 程序一样。你可以用 Node.js 轻松地进行服务器端应用开发，Python、Perl、PHP、Ruby 能做的事情 Node.js 几乎都能做，而且可以做得更好。 
+						  	</p>
+						  	<p>
+						  		以上是官方的介绍，从我的角度通俗的来说。作为一个前端，通过nodejs可以用自己熟悉的语言（javascript）部署服务器，而不需要通过java，php或者c＃等重量级的编程语言部署。至于数据库，也可以用mongodb来建立。整个服务器端和数据库端的部署十分便利，不需要配置复杂的环境，只需要简简单单的几段代码就可以完成，这无疑是十分新颖便利而且具有吸引力的一种方式。
+						  	</p>
+						  </div>
+			    		</div>
+			    	</section>
+			    	<section id = "install">
+			    		<div class="hentry">
+						  <div class="page-header">
+						  	<h1 class="entry-title">安装</h1>
+						  </div>
+						  <div class="entry-content">
+						  	<p>
+						  		nodejs的安装也十分便利，只需要从官方网站下载安装即可，官网的地址:<a target="_blank" href="http://nodejs.org/">http://nodejs.org/</a>
+						  	</p>
+						  	<p>
+							  	下载安装完成之后，在系统终端输入<code>node -v</code>，如果命令行打出类似<code>v0.8.17</code>,则表示已经安装成功，这时候就可以开始使用nodejs编程了。
+						  	</p>
+						  </div>
+			    		</div>
+			    	</section>
+			    	<section id = "helloworld">
+			    		<div class="hentry">
+						  <div class="page-header">
+						  	<h1 class="entry-title">helloworld</h1>
+						  </div>
+						  <div class="entry-content">
+						  	<p>
+						  	下面我们可以试着用nodejs编写一个helloworld程序。
+						  	新建一个helloworld.js,将以下的代码拷贝到helloworld.js中
+						  	</p>
+						  	<pre class="prettyprint linenums">
+						  		<ol class="linenums">
+						  			<li class="L0">var http = require('http');</li>
+						  			<li class="L0">var server = http.createServer(function (request, response) {</li>
+						  			<li class="L1">response.end('helloworld');</li>
+						  			<li class="L0">});</li>
+						  			<li class="L0">server.listen(8881);</li>
+						  		</ol>
+						  	</pre>
+						  	<p>
+							   运行终端，找到这个文件的目录，输入指令<code>node helloworld.js</code>.
+						  	这个时候，在浏览器里面键入<code>http://localhost:8881</code>就可以看见效果了。
+						  	</p>
+						  	<p>
+							  	上面这段代码只是用 nodejs 库里面的<code>http</code>对象建立了一个服务器，并在端口8881上面监听。所有的nodejs库都是使用<code>require</code>方法导入并实例化，如果你现在觉得nodejs有点意思并想深入学习，可以继续看本文档，下面提供了几个比较好的网站学习nodejs。
+						  	</p>
+						  </div>
+			    		</div>
+			    	</section>
+			    	<section id = "websites">
+			    		<div class="hentry">
+						  <div class="page-header">
+						  	<h1 class="entry-title">推荐网站</h1>
+						  </div>
+						  <div class="entry-content">
+				    		<p>
+				    			nodejs官网：<a target="_blank" href="http://nodejs.org/">http://nodejs.org/</a>
+				    		</p>
+				    		<p>
+				    			nodejs官方文档：<a target="_blank" href="http://nodejs.org/api/">http://nodejs.org/api/</a>
+				    		</p>
+				    		<p>
+				    			nodejs中文文档：<a target="_blank" href="http://docs.cnodejs.net/cman/">http://docs.cnodejs.net/cman/</a>。目前算是翻译的比较全的中文文档
+				    		</p>
+				    		<p>
+				    			nodejs交流社区：<a target="_blank" href="http://www.nodejs.net/">http://www.nodejs.net/</a>。其中内容较全，还有教程噢。
+				    		</p>
+						  </div>
+			    		</div>
+			    	</section>
+			    </div>
+			</div>		
 		</div>
 	</body>
 </html>
