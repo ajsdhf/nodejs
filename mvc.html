@@ -19,6 +19,8 @@
 				  <li><a href="/nodejs/index.html">首页</a></li>
 				  <li><a href="/nodejs/nodejs.html">介绍入门</a></li>
 				  <li class="active"><a href="/nodejs/mvc.html">mvc架构</a></li>
+				  <li ><a href="/nodejs/db.html">连接数据库</a></li>
+				  <li ><a href="/nodejs/download.html">demo下载</a></li>
 				</ul>
 			</div>
 		</div>
@@ -29,7 +31,7 @@
 			          <li><a href="#intro"><i class="icon-chevron-right"></i>express介绍</a></li>
 			          <li><a href="#install"><i class="icon-chevron-right"></i>安装和部署</a></li>
 			          <li><a href="#bushu"><i class="icon-chevron-right"></i>express部署服务器</a></li>
-			          <li><a href="#routes"><i class="icon-chevron-right"></i>建立路由</a></li>
+			          <li><a href="#mvc"><i class="icon-chevron-right"></i>建立mvc</a></li>
 			        </ul>
 			    </div>
 			    <div class="span9">
@@ -57,7 +59,7 @@
 						  	<p>
 							  	在终端命令行中找到nodejs的项目目录，并输入
 							  	<pre>npm install -g express</pre>
-							  	等待命令完成，电脑就已经自动安装好了<code>express</code>包。接下来要初始化
+							  	等待命令完成，电脑就已经自动安装好了<code>express</code>包。
 						  	</p>
 						  </div>
 			    		</div>
@@ -68,16 +70,80 @@
 						  	<h1 class="entry-title">express部署服务器</h1>
 						  </div>
 						  <div class="entry-content">
+						  	 和前一篇的入门不大一样的是，express自己封装了一套创建服务器的方法，代码如下：
+						  	 <pre class="prettyprint linenums">
+						  		<ol class="linenums"><li class="L0">var express = require('express');</li><li class="L0">var app = express.createServer();</li><li class="L0">app.get('*',function(req,res){</li><li class="L1">	res.json({res:"404"});</li><li class="L0">});</li><li class="L0">app.listen(1088);</li></ol>
+						  	 </pre>
+						  	 虽然看上去好像和<code>http</code>对象写法差不多，但是<code>express</code>包里面封装了多种对象，可以帮助我们很快的建立起mvc架构。
 						  </div>
 			    		</div>
 			    	</section>
-			    	<section id = "routes">
+			    	<section id = "mvc">
 			    		<div class="hentry">
 						  <div class="page-header">
-						  	<h1 class="entry-title">建立路由</h1>
+						  	<h1 class="entry-title">建立mvc</h1>
 						  </div>
 						  <div class="entry-content">
-				    		
+				    		<p>
+					    		众所周知，mvc架构是由<code>model</code>层，<code>controller</code>层和<code>view</code>层为主的架构。下面是以express为框架搭建的一个简单的mvc架构
+				    		</p>
+				    		<pre>
+					    		<img src="img/mvc.png" style="position:relative;right:40%;"/>
+				    		</pre>
+				    		<p>
+				    			以上的<code>app.js</code>是主要的js文件，他指定文件路径和统一的http请求入口。
+				    			<code>routes.js</code>是自己封装的脚本文件，把http请求做统一处理。
+				    			<code>app.js</code>指定了<code>view</code>层路径，里面用来存放htm文件，代码如下
+				    		</p>
+				    		<pre class="prettyprint linenums">
+						  		<ol class="linenums"><li class="L0">app.configure(function(){</li><li class="L1">	app.set('view engine','htm');</li><li class="L1">	app.set('view','/views');</li><li class="L1">	app.set("view options",{layout: true });</li><li class="L1">	app.register('.htm',require('ejs'));</li><li class="L0">})</li>
+						  		</ol>
+				    		</pre>
+				    		<p>
+				    			<code>app.js</code>指定<code>static</code>为静态文件，如css，js还有img等的文件路径，代码如下
+				    		</p>
+				    		<pre class="prettyprint linenums">
+						  		<ol class="linenums">
+						  			<li class="L0">var path = require('path');</li><li class="L0">var static_dir = path.join(__dirname, 'static');</li><li class="L0">app.configure('development', function(){</li><li class="L1">	app.use(express.static(__dirname + "/static"));</li><li class="L1">	app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); </li><li class="L0">});</li>
+						  		</ol>
+				    		</pre>
+				    		<p>
+					    		<code>express</code>的<code>configure</code>方法还有很多用途，想要了解详细的可以<a href="http://expressjs.com/api.html#app.configure" target="_blank">点击这里</a>
+				    		</p>
+				    		<p>
+				    			<code>controller</code>层是主要的业务层，所有的http请求的集中处理的层，所有的http请求都集中到controller层进行处理，下面是一段简单的代码
+				    		</p>
+				    		<pre class="prettyprint linenums">
+						  		<ol class="linenums">
+							  		<li class="L0">exports.index = function(req,res,next){</li><li class="L1">	res.render("home/index",{error:""});</li><li class="L0">}</li>
+						  		</ol>
+				    		</pre>
+				    		<p>
+					    		如上面所示，这段代码封装了一个<code>index</code>方法，主要内容只是返回<code>view</code>里面的<code>home</code>文件夹下面的<code>index.htm</code>文件。如果需要传参，则可以直接在<code>{error:""}</code>里面添加json数据即可在页面接收。
+				    		</p>
+				    		<p>
+					    		把上述的代码存在<code>index.js</code>中，那么这个时候我们就可以在别的文件中调用到这个方法。为了方便编码，我们把所有的入口封装在<code>routes.js</code>中，以便集中管理，代码如下
+				    		</p>
+				    		<pre class="prettyprint linenums">
+						  		<ol class="linenums"><li class="L0">var Index = require('./controller/index.js');</li>	
+
+							  		<li class="L0">exports = module.exports = function(app){</li><li class="L1">	app.get('/index.htm',Index.index);</li><li class="L1">	app.get('*',function(req,res){</li><li class="L2">		res.json({res:"404"});</li><li class="L1">	});</li><li class="L0">}</li>
+						  		</ol>
+				    		</pre>
+				    		<p>
+					    		我们使用<code>require</code>方法把刚才封装好的<code>index.js</code>导入，当http请求为<code>/index.htm</code>时，就会执行<code>index.js</code>中的<code>index</code>方法，将<code>view</code>层的<code>index.htm</code>文件下载到浏览器中展现。而且我们现在也看到<code>routes.js</code>中，也把自己封装成了一个方法，在<code>app.js</code>中只用使用以下代码，就可以调用
+				    		</p>
+				    		<pre class="prettyprint linenums">
+						  		<ol class="linenums">
+						  			<li class="L0">var routes = require('./routes');</li><li class="L0">routes(app);</li>
+						  		</ol>
+				    		</pre>
+				    		<p>
+					    		此时，一套完整的流程就可以走通了。
+				    		</p>
+				    		<p>
+				    			其中<code>model</code>层会在下面的nodejs连接数据库的时候讲到，所以这里略过。
+				    		</p>	
 						  </div>
 			    		</div>
 			    	</section>
